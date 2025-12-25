@@ -252,7 +252,7 @@ export const mockService = {
     updatedReq.updatedAt = new Date().toISOString();
     updatedReq.bookingResult = {
       ...resultData,
-      files: ['https://picsum.photos/400/600'] // Mock file attachment
+      files: resultData.files || [] // Use uploaded files from frontend
     };
 
     updatedReq.history.push({
@@ -260,6 +260,33 @@ export const mockService = {
       action: 'BOOKING_COMPLETED',
       actor: user.name,
       timestamp: new Date().toISOString()
+    });
+
+    requests[reqIndex] = updatedReq;
+    return updatedReq;
+  },
+
+  updateBookingFiles: async (reqId: string, user: User, files: string[]): Promise<TravelRequest> => {
+    const reqIndex = requests.findIndex(r => r.id === reqId);
+    if (reqIndex === -1) throw new Error("Request not found");
+
+    const updatedReq = { ...requests[reqIndex] };
+    if (!updatedReq.bookingResult) {
+        throw new Error("No booking result to update");
+    }
+
+    updatedReq.bookingResult = {
+        ...updatedReq.bookingResult,
+        files: files
+    };
+    updatedReq.updatedAt = new Date().toISOString();
+
+    updatedReq.history.push({
+      id: Math.random().toString(36).substr(2, 9),
+      action: 'FILES_UPDATED',
+      actor: user.name,
+      timestamp: new Date().toISOString(),
+      details: '管理员修改了预定附件'
     });
 
     requests[reqIndex] = updatedReq;
