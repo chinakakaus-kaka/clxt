@@ -581,108 +581,106 @@ const CreateRequest: React.FC<CreateRequestProps> = ({ user }) => {
         const nights = calculateDuration(formData.checkInDate, formData.checkOutDate);
         return (
           <div className="space-y-6">
-            {/* Unified Search Bar Container */}
-            <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-               <div className="flex flex-col lg:flex-row gap-4">
-                  {/* City Input */}
-                  <div className="flex-1 relative border-b lg:border-b-0 lg:border-r border-gray-200 lg:pr-4 pb-4 lg:pb-0">
-                      <label className="block text-xs text-gray-400 mb-1">目的地/城市</label>
+            {/* Unified Search Bar Container - 2 Row Grid Layout */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+               <div className="grid grid-cols-1 lg:grid-cols-12">
+                  
+                  {/* City Input - Row 1, Col 1 */}
+                  <div className="lg:col-span-5 p-4 border-b border-gray-100 lg:border-r hover:bg-gray-50 transition-colors group cursor-pointer">
+                      <label className="block text-xs text-gray-500 mb-1 ml-8 whitespace-nowrap">目的地/城市</label>
                       <div className="flex items-center">
-                          <MapPin className="w-5 h-5 text-gray-400 mr-2" />
+                          <MapPin className="w-5 h-5 text-indigo-500 mr-3 group-hover:text-indigo-600 flex-shrink-0" />
                           <input 
                             type="text" 
                             name="city" 
                             value={formData.city || ''} 
                             onChange={handleInputChange} 
-                            className="w-full font-bold text-gray-900 placeholder-gray-300 outline-none text-lg" 
-                            placeholder="北京" 
+                            className="w-full font-bold text-gray-900 placeholder-gray-300 outline-none text-lg bg-transparent truncate" 
+                            placeholder="北京 / 上海" 
                             required 
                           />
                       </div>
                   </div>
 
-                  {/* Date Range */}
-                  <div className="flex-1 relative border-b lg:border-b-0 lg:border-r border-gray-200 lg:px-4 pb-4 lg:pb-0">
-                       <label className="block text-xs text-gray-400 mb-1">入住 - 退房</label>
+                  {/* Date Range - Row 1, Col 2 */}
+                  <div className="lg:col-span-7 p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors group cursor-pointer relative">
+                       <label className="block text-xs text-gray-500 mb-1 ml-8 whitespace-nowrap">入住 - 退房</label>
                        <div className="flex items-center">
-                          <Calendar className="w-5 h-5 text-gray-400 mr-2" />
-                          <input 
-                              type="date" 
-                              name="checkInDate" 
-                              value={formData.checkInDate || ''} 
-                              onChange={handleInputChange} 
-                              className="font-bold text-gray-900 outline-none text-sm w-28" 
-                              required 
-                          />
-                          <span className="mx-2 text-gray-300">-</span>
-                           <input 
-                              type="date" 
-                              name="checkOutDate" 
-                              value={formData.checkOutDate || ''} 
-                              onChange={handleInputChange} 
-                              className="font-bold text-gray-900 outline-none text-sm w-28" 
-                              required 
-                          />
-                       </div>
-                       <div className="absolute top-1 right-4 lg:right-4 text-xs bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded-full">
-                           {nights > 0 ? `${nights} 晚` : '请选择日期'}
+                          <Calendar className="w-5 h-5 text-indigo-500 mr-3 group-hover:text-indigo-600 flex-shrink-0" />
+                          <div className="flex items-center gap-3 w-full">
+                              <input 
+                                  type="date" 
+                                  name="checkInDate" 
+                                  value={formData.checkInDate || ''} 
+                                  onChange={handleInputChange} 
+                                  className="font-bold text-gray-900 outline-none text-base bg-transparent flex-1 cursor-pointer" 
+                                  required 
+                              />
+                              <span className="text-gray-300">-</span>
+                               <input 
+                                  type="date" 
+                                  name="checkOutDate" 
+                                  value={formData.checkOutDate || ''} 
+                                  onChange={handleInputChange} 
+                                  className="font-bold text-gray-900 outline-none text-base bg-transparent flex-1 cursor-pointer" 
+                                  required 
+                              />
+                          </div>
+                          <div className="hidden xl:block ml-2 text-xs bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded-full whitespace-nowrap">
+                              {nights > 0 ? `${nights} 晚` : '0 晚'}
+                          </div>
                        </div>
                   </div>
 
-                  {/* Guests / Room Config */}
-                  <div className="flex-1 relative border-b lg:border-b-0 lg:border-r border-gray-200 lg:px-4 pb-4 lg:pb-0">
-                      <label className="block text-xs text-gray-400 mb-1">房间 & 住客</label>
+                  {/* Guests / Room Config - Row 2, Col 1 */}
+                  <div className="lg:col-span-4 p-4 border-b lg:border-b-0 border-gray-100 lg:border-r hover:bg-gray-50 transition-colors group cursor-pointer">
+                      <label className="block text-xs text-gray-500 mb-1 ml-8 whitespace-nowrap">房间 & 住客</label>
                       <div className="flex items-center">
-                          <Users className="w-5 h-5 text-gray-400 mr-2" />
+                          <Users className="w-5 h-5 text-indigo-500 mr-3 group-hover:text-indigo-600 flex-shrink-0" />
                           <div className="flex items-center gap-2">
                              <select 
                                 name="roomCount" 
                                 value={formData.roomCount} 
                                 onChange={handleInputChange}
-                                className="font-bold text-gray-900 outline-none bg-transparent"
+                                className="font-bold text-gray-900 outline-none bg-transparent cursor-pointer hover:text-indigo-600 text-base"
                              >
-                                 <option value="1">1间</option>
-                                 <option value="2">2间</option>
-                                 <option value="3">3间</option>
+                                 {[1,2,3,4,5,6,7,8].map(n => <option key={n} value={n}>{n}间</option>)}
                              </select>
                              <span className="text-gray-300">,</span>
                              <select 
                                 name="guestCount" 
                                 value={formData.guestCount} 
                                 onChange={handleInputChange}
-                                className="font-bold text-gray-900 outline-none bg-transparent"
+                                className="font-bold text-gray-900 outline-none bg-transparent cursor-pointer hover:text-indigo-600 text-base"
                              >
-                                 <option value="1">1成人</option>
-                                 <option value="2">2成人</option>
-                                 <option value="3">3成人</option>
-                                 <option value="4">4成人</option>
+                                 {[1,2,3,4,5,6,7,8,9,10].map(n => <option key={n} value={n}>{n}人</option>)}
                              </select>
                           </div>
                       </div>
                   </div>
                   
-                  {/* Keywords */}
-                  <div className="flex-1 relative lg:px-4 pb-4 lg:pb-0">
-                      <label className="block text-xs text-gray-400 mb-1">关键字/酒店名</label>
+                  {/* Keywords - Row 2, Col 2 */}
+                  <div className="lg:col-span-6 p-4 border-b lg:border-b-0 border-gray-100 lg:border-r hover:bg-gray-50 transition-colors group cursor-pointer">
+                      <label className="block text-xs text-gray-500 mb-1 ml-8 whitespace-nowrap">关键字/酒店名</label>
                        <div className="flex items-center">
-                          <Search className="w-5 h-5 text-gray-400 mr-2" />
+                          <Search className="w-5 h-5 text-indigo-500 mr-3 group-hover:text-indigo-600 flex-shrink-0" />
                           <input 
                               type="text" 
                               value={hotelKeywords} 
                               onChange={(e) => setHotelKeywords(e.target.value)} 
-                              className="w-full font-bold text-gray-900 placeholder-gray-300 outline-none text-base" 
-                              placeholder="位置 / 品牌" 
+                              className="w-full font-bold text-gray-900 placeholder-gray-300 outline-none text-lg bg-transparent truncate" 
+                              placeholder="希尔顿 / 机场" 
                           />
                        </div>
                   </div>
 
-                  {/* Search Button */}
-                  <div className="flex items-center">
+                  {/* Search Button - Row 2, Col 3 */}
+                  <div className="lg:col-span-2 p-2 flex items-center justify-center">
                      <button 
                         type="button" 
                         onClick={handleSearchHotels}
                         disabled={isSearchingHotels}
-                        className="w-full lg:w-auto h-12 lg:h-full bg-blue-600 hover:bg-blue-700 text-white px-8 rounded-lg font-bold text-lg shadow-md transition-colors flex items-center justify-center"
+                        className="w-full h-full min-h-[50px] bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-bold text-lg shadow-sm transition-all flex items-center justify-center whitespace-nowrap"
                      >
                         {isSearchingHotels ? <Loader2 className="w-6 h-6 animate-spin"/> : '搜索'}
                      </button>
