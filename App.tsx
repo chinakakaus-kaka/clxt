@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout';
@@ -6,9 +7,11 @@ import UserDashboard from './pages/user/UserDashboard';
 import CreateRequest from './pages/user/CreateRequest';
 import UserRequestDetail from './pages/user/UserRequestDetail';
 import UserProfile from './pages/user/UserProfile';
+import UserReimbursement from './pages/user/UserReimbursement';
 import AdminWorkbench from './pages/admin/AdminWorkbench';
 import AdminStats from './pages/admin/AdminStats';
 import AdminRequestDetail from './pages/admin/AdminRequestDetail';
+import AdminReimbursement from './pages/admin/AdminReimbursement';
 import { User, Role } from './types';
 
 const App: React.FC = () => {
@@ -40,6 +43,7 @@ const App: React.FC = () => {
                 <Routes>
                   <Route path="workbench" element={<AdminWorkbench user={user} />} />
                   <Route path="stats" element={<AdminStats user={user} />} />
+                  <Route path="reimbursements" element={<AdminReimbursement user={user} />} />
                   <Route path="request/:id" element={<AdminRequestDetail user={user} />} />
                   <Route path="*" element={<Navigate to="workbench" />} />
                 </Routes>
@@ -56,6 +60,7 @@ const App: React.FC = () => {
                   <Route path="dashboard" element={<UserDashboard user={user} />} />
                   <Route path="create" element={<CreateRequest user={user} />} />
                   <Route path="request/:id" element={<UserRequestDetail user={user} />} />
+                  <Route path="reimbursements" element={<UserReimbursement user={user} />} />
                   <Route path="profile" element={<UserProfile user={user} />} />
                   <Route path="*" element={<Navigate to="dashboard" />} />
                 </Routes>

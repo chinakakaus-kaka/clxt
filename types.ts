@@ -1,3 +1,4 @@
+
 export enum Role {
   USER = 'USER',
   ADMIN = 'ADMIN'
@@ -186,4 +187,41 @@ export interface User {
   email: string;
   role: Role;
   avatar?: string;
+}
+
+// --- Reimbursement Types ---
+
+export enum ReimbursementStatus {
+  PENDING = 'PENDING',
+  APPROVED = 'APPROVED',
+  REJECTED = 'REJECTED'
+}
+
+export enum ReimbursementCategory {
+  MEALS = 'MEALS',
+  TRANSPORT = 'TRANSPORT',
+  ACCOMMODATION = 'ACCOMMODATION',
+  OTHER = 'OTHER'
+}
+
+export const ReimbursementCategoryTranslation: Record<ReimbursementCategory, string> = {
+  [ReimbursementCategory.MEALS]: '餐饮',
+  [ReimbursementCategory.TRANSPORT]: '交通',
+  [ReimbursementCategory.ACCOMMODATION]: '住宿',
+  [ReimbursementCategory.OTHER]: '其他'
+};
+
+export interface Reimbursement {
+  id: string;
+  userId: string;
+  userName: string;
+  amount: number;
+  category: ReimbursementCategory;
+  description: string;
+  date: string;
+  attachments: string[]; // Base64 or URLs
+  status: ReimbursementStatus;
+  createdAt: string;
+  approvedBy?: string;
+  rejectionReason?: string;
 }

@@ -1,3 +1,4 @@
+
 import { 
   TravelRequest, 
   RequestStatus, 
@@ -6,7 +7,10 @@ import {
   Urgency,
   User,
   Comment,
-  UserProfile
+  UserProfile,
+  Reimbursement,
+  ReimbursementStatus,
+  ReimbursementCategory
 } from '../types';
 
 // ==========================================
@@ -40,6 +44,7 @@ const INITIAL_PROFILES: Record<string, UserProfile> = {
 let db_users: User[] = [...INITIAL_USERS];
 let db_profiles: Record<string, UserProfile> = { ...INITIAL_PROFILES };
 let db_requests: TravelRequest[] = []; // Started Empty
+let db_reimbursements: Reimbursement[] = []; // Separate storage for reimbursements
 
 // ==========================================
 // --- Service Logic ---
@@ -258,5 +263,53 @@ export const mockService = {
     await new Promise(resolve => setTimeout(resolve, 300));
     const idsSet = new Set(ids);
     db_requests = db_requests.filter(r => !idsSet.has(r.id));
+  },
+
+  // ==========================================
+  // --- Reimbursement Service Logic ---
+  // ==========================================
+
+  getReimbursements: async (user?: User): Promise<Reimbursement[]> => {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    if (user?.role === Role.ADMIN) {
+      return [...db_reimbursements].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    }
+    return db_reimbursements.filter(r => r.userId === user?.id).sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  },
+
+  createReimbursement: async (user: User, data: Partial<Reimbursement>): Promise<Reimbursement> => {
+     await new Promise(resolve => setTimeout(resolve, 300));
+     const newReimbursement: Reimbursement = {
+       id: `RMB-${new Date().getFullYear()}${String(new Date().getMonth()+1).padStart(2,'0')}-${Math.floor(Math.random() * 10000)}`,
+       userId: user.id,
+       userName: user.name,
+       amount: data.amount || 0,
+       category: data.category || ReimbursementCategory.OTHER,
+       description: data.description || '',
+       date: data.date || new Date().toISOString().split('T')[0],
+       attachments: data.attachments || [],
+       status: ReimbursementStatus.PENDING,
+       createdAt: new Date().toISOString()
+     };
+     db_reimbursements.unshift(newReimbursement);
+     return newReimbursement;
+  },
+
+  updateReimbursementStatus: async (id: string, status: ReimbursementStatus, user: User, reason?: string): Promise<Reimbursement> => {
+    await new Promise(resolve => setTimeout(resolve, 300));
+    const index = db_reimbursements.findIndex(r => r.id === id);
+    if (index === -1) throw new Error("Reimbursement not found");
+
+    const updated = { ...db_reimbursements[index] };
+    updated.status = status;
+    if (status === ReimbursementStatus.APPROVED) {
+        updated.approvedBy = user.name;
+    }
+    if (status === ReimbursementStatus.REJECTED) {
+        updated.rejectionReason = reason;
+    }
+    
+    db_reimbursements[index] = updated;
+    return updated;
   }
 };

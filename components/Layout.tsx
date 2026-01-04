@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { User, Role } from '../types';
@@ -10,7 +11,8 @@ import {
   X,
   UserCircle,
   ClipboardList,
-  BarChart3
+  BarChart3,
+  Receipt
 } from 'lucide-react';
 
 interface LayoutProps {
@@ -34,6 +36,9 @@ const Layout: React.FC<LayoutProps> = ({ children, user, onLogout }) => {
     <>
       {isAdmin ? (
         <>
+          <div className="px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+             差旅预定
+          </div>
           <Link
             to="/admin/workbench"
             onClick={() => setIsMobileMenuOpen(false)}
@@ -58,9 +63,28 @@ const Layout: React.FC<LayoutProps> = ({ children, user, onLogout }) => {
             <BarChart3 className="w-5 h-5" />
             <span>数据统计</span>
           </Link>
+
+          <div className="mt-4 px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+             财务报销
+          </div>
+          <Link
+            to="/admin/reimbursements"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+              isActive('/admin/reimbursements') 
+                ? 'bg-indigo-50 text-indigo-600 font-medium' 
+                : 'text-gray-600 hover:bg-gray-50'
+            }`}
+          >
+            <Receipt className="w-5 h-5" />
+            <span>报销审批</span>
+          </Link>
         </>
       ) : (
         <>
+           <div className="px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+             差旅管理
+          </div>
           <Link
             to="/user/dashboard"
             onClick={() => setIsMobileMenuOpen(false)}
@@ -84,6 +108,22 @@ const Layout: React.FC<LayoutProps> = ({ children, user, onLogout }) => {
           >
             <PlusCircle className="w-5 h-5" />
             <span>新建需求</span>
+          </Link>
+
+          <div className="mt-4 px-4 py-2 text-xs font-semibold text-gray-400 uppercase tracking-wider">
+             个人中心
+          </div>
+          <Link
+            to="/user/reimbursements"
+            onClick={() => setIsMobileMenuOpen(false)}
+            className={`flex items-center space-x-3 px-4 py-3 rounded-lg transition-colors ${
+              isActive('/user/reimbursements') 
+                ? 'bg-indigo-50 text-indigo-600 font-medium' 
+                : 'text-gray-600 hover:bg-gray-50'
+            }`}
+          >
+            <Receipt className="w-5 h-5" />
+            <span>我的报销</span>
           </Link>
           <Link
             to="/user/profile"
@@ -113,7 +153,7 @@ const Layout: React.FC<LayoutProps> = ({ children, user, onLogout }) => {
           <span className="text-xl font-bold text-gray-800 tracking-tight">TripFlow</span>
         </div>
 
-        <nav className="flex-1 p-4 space-y-2 overflow-y-auto">
+        <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
           <NavLinks />
         </nav>
 
